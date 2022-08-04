@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstdint>
-#include "program/program.hpp"
+#include "rom/rom.hpp"
 
 // 
 namespace CPUEmulator {
