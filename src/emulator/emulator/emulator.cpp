@@ -3,61 +3,61 @@
 #include <iostream>
 
 using CPUEmulator::Emulator;
-using CPUEmulator::Program;
+using CPUEmulator::Rom;
 
-std::uint8_t& Emulator::getU8Register(ByteRegisters reg) {
+std::uint8_t& Emulator::getU8Register(U8Registers reg) {
     switch (reg) {
-        case ByteRegisters::AL: {
+        case U8Registers::AL: {
             return *(std::uint8_t*)&AReg;
         } break;
-        case ByteRegisters::AH: {
+        case U8Registers::AH: {
             return *(std::uint8_t*)(&AReg+1);
         } break;
-        case ByteRegisters::BL: {
+        case U8Registers::BL: {
             return *(std::uint8_t*)&BReg;
         } break;
-        case ByteRegisters::BH: {
+        case U8Registers::BH: {
             return *(std::uint8_t*)(&BReg+1);
         } break;
-        case ByteRegisters::CL: {
+        case U8Registers::CL: {
             return *(std::uint8_t*)&CReg;
         } break;
-        case ByteRegisters::CH: {
+        case U8Registers::CH: {
             return *(std::uint8_t*)(&CReg+1);
         } break;
-        case ByteRegisters::DL: {
+        case U8Registers::DL: {
             return *(std::uint8_t*)&DReg;
         } break;
-        case ByteRegisters::DH: {
+        case U8Registers::DH: {
             return *(std::uint8_t*)(&DReg+1);
         } break;
-        case ByteRegisters::X: {
+        case U8Registers::X: {
             return XReg;
         } break;
-        case ByteRegisters::Y: {
+        case U8Registers::Y: {
             return YReg;
         } break;
     }
 }
 
-std::uint16_t& Emulator::getU16Register(WordRegisters reg) {
+std::uint16_t& Emulator::getU16Register(U16Registers reg) {
     switch (reg) {
-        case WordRegisters::A: {
+        case U16Registers::A: {
             return AReg;
         } break;
-        case WordRegisters::B: {
+        case U16Registers::B: {
             return BReg;
         } break;
-        case WordRegisters::C: {
+        case U16Registers::C: {
             return CReg;
         } break;
-        case WordRegisters::D: {
+        case U16Registers::D: {
             return DReg;
         } break;
-        case WordRegisters::SP: {
+        case U16Registers::SP: {
             return stackPointer;
         } break;
-        case WordRegisters::IP: {
+        case U16Registers::IP: {
             return instructionPointer;
         } break;
     }
@@ -87,11 +87,11 @@ std::uint16_t Emulator::stackPopU16() {
     return (hibyte << 8) | lobyte;
 }
 
-void Emulator::setProgramMemory(Program _prog) {
+void Emulator::setProgramMemory(Rom _prog) {
     prog = _prog;
 }
 
-Program& Emulator::getProgramRom() {
+Rom& Emulator::getProgramRom() {
     return prog;
 }
 
@@ -103,21 +103,33 @@ bool Emulator::step() {
     std::uint16_t arg0 = (prog[instructionPointer + 1] << 8) | prog[instructionPointer + 2];
     std::uint16_t arg1 = (prog[instructionPointer + 3] << 8) | prog[instructionPointer + 4];
 
+    bool incrementInstructionPointer = true;
+
     switch (instruction) {
         case Instructions::LDIB: {
-            ByteRegisters reg = (ByteRegisters)arg0;
+            U8Registers reg = (U8Registers)arg0;
             getU8Register(reg) = (std::uint8_t)arg1;
         } break;
         case Instructions::LDIW: {
-            WordRegisters reg = (WordRegisters)arg0;
+            U16Registers reg = (U16Registers)arg0;
             getU16Register(reg) = arg1;
         } break;
+        case Instructions::JMPI: {
+            incrementInstructionPointer = false;
+            instructionPointer = arg0;
+        } break;
+        case Instructions::JMP: {
+            incrementInstructionPointer = false;
+            instructionPointer = getU16Register((U16Registers)arg0);
+        } break;
+        case Instructions::ADDB: break;
+        case Instructions::ADDW: break;
     }
 
 
 
     // Every instruction is 5 bytes wide
-    instructionPointer += 5;
+    if (incrementInstructionPointer) instructionPointer += 5;
 
     return true;
 }

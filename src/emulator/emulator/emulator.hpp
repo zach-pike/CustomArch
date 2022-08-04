@@ -19,7 +19,7 @@ public:
 
     };
 
-    enum class WordRegisters {
+    enum class U16Registers {
         A,
         B,
         C,
@@ -28,7 +28,7 @@ public:
         IP
     };
 
-    enum class ByteRegisters {
+    enum class U8Registers {
         AL,
         AH,
         BL,
@@ -41,7 +41,7 @@ public:
         Y
     };
 
-    Program prog;
+    Rom prog;
 private:
     std::uint16_t AReg = 0;
     std::uint16_t BReg = 0;
@@ -64,11 +64,11 @@ public:
     std::uint8_t stackPopU8();
     std::uint16_t stackPopU16();
 
-    std::uint8_t& getU8Register(ByteRegisters reg);
-    std::uint16_t& getU16Register(WordRegisters reg);
+    std::uint8_t& getU8Register(U8Registers reg);
+    std::uint16_t& getU16Register(U16Registers reg);
 
-    void setProgramMemory(Program _prog);
-    Program& getProgramRom();
+    void setProgramMemory(Rom _prog);
+    Rom& getProgramRom();
 
     bool step();
 };
