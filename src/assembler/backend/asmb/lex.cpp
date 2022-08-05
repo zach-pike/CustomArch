@@ -47,6 +47,12 @@ tokens::tokens(lexer_states_and_token_literals&& states_and_literals, token_type
     types.types = nullptr;
 }
 
+tokens::tokens(tokens&& other) : size(other.size), types(other.types), literals(other.literals) {
+    other.size = 0;
+    other.types = nullptr;
+    other.literals = nullptr;
+}
+
 tokens::~tokens() {
     if (types != nullptr) {
         std::free(types);
@@ -412,6 +418,7 @@ tokens asmb::get_tokens_from_source(const std::span<const char> source) {
                         case ':': return token_type::colon;
                         case ',': return token_type::comma;
                         case '.': return token_type::period;
+                        case '*': return token_type::star;
                         default: break;
                     } break;
                     case 2: switch (literal.data[1]) {

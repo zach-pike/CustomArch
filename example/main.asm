@@ -1,5 +1,5 @@
 my_string: "Hello World!";
-start:
+start(0x100):
     push(my_string);
     puts();
     pop();
