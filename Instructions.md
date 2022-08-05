@@ -240,6 +240,7 @@ X = *Y
 
 ### LDFAIW
 Argument 0 - imm16
+
 Argument 1 - reg16
 #### Desc.
 Derefrence the value stored in the first argument and store that result in the second register.
@@ -250,6 +251,89 @@ X = *Y
 ```
 
 ---
+
+### STA
+Argument 0 - reg16
+
+Argument 1 - reg8
+#### Desc.
+Derefrences first argument and stores the value at the second argument.
+
+---
+
+### STAW
+Argument 0 - reg16
+
+Argument 1 - reg16
+#### Desc.
+Derefrences first argument and stores the value at the second argument.
+
+---
+
+### STAI
+Argument 0 - reg16
+
+Argument 1 - imm8
+#### Desc.
+Derefrences first argument and stores the value at the second argument.
+
+---
+
+### STAIW
+Argument 0 - reg16
+
+Argument 1 - imm16
+#### Desc.
+Derefrences first argument and stores the value at the second argument.
+
+---
+
+### CMP
+Argument 0 - reg8
+
+Argument 1 - reg8
+#### Desc.
+Compares the two registers and sets the appropriate flags
+#### Flags
+Sets zero flag if both registers are the same
+Sets less than flag if reg0 < reg1
+
+---
+### CMPW
+Argument 0 - reg16
+
+Argument 1 - reg16
+#### Desc.
+Compares the two registers and sets the appropriate flags
+#### Flags
+Sets zero flag if both registers are the same
+Sets less than flag if reg0 < reg1
+
+---
+
+### CMPI
+Argument 0 - reg8
+
+Argument 1 - imm8
+#### Desc.
+Compares the two values and sets the appropriate flags
+#### Flags
+Sets zero flag if both values are the same
+Sets less than flag if imm0 < reg1
+
+---
+### CMPIW
+Argument 0 - reg16
+
+Argument 1 - imm16
+#### Desc.
+Compares the two values and sets the appropriate flags
+#### Flags
+Sets zero flag if both values are the same
+Sets less than flag if imm0 < reg1
+
+---
+
 
 ### HLT
 Argument 0 - N/a
