@@ -47,8 +47,35 @@ public:
         LDFAI,   // Load a value by derefrenceing a 16-Bit immediate and loading that byte into a 8-Bit register
         LDFAIW,  // Load a value by derefrenceing a 16-Bit immediate and loading thoes bytes into a 16-Bit register
 
+        // Compare instructions
+        CMP,     // Compare 2 8-Bit registers and sets the zero flag
+        CMPW,    // Compare 2 16-Bit registers and sets the zero flag
+
         // Halt
         HLT,     // Send the halt command
+
+        // Bitwise instructions
+        // And instructions
+        AND,
+        ANDW,
+        ANDI,
+        ANDIW,
+
+        // Or instruction
+        OR,
+        ORW,
+        ORI,
+        ORIW,
+
+        // Invert
+        INV,
+        INVW,
+
+        // XOR
+        XOR,
+        XORW,
+        XORI,
+        XORIW,
     };
 
     enum class U16Registers {
@@ -73,6 +100,11 @@ public:
         Y
     };
 
+    enum class FlagRegister {
+        CARRY_FLAG,
+        ZERO_FLAG
+    };
+
     Rom prog;
 private:
     std::uint16_t AReg = 0;
@@ -89,6 +121,8 @@ private:
     // Instruction pointer
     std::uint16_t instructionPointer = 0x100;
 
+    // Flags register
+    std::uint8_t flagsRegister = 0;
 public:
     // Stack functions
     void stackPushU8(std::uint8_t value);
@@ -98,6 +132,9 @@ public:
 
     std::uint8_t& getU8Register(U8Registers reg);
     std::uint16_t& getU16Register(U16Registers reg);
+
+    void setFlag(FlagRegister flag, bool value);
+    bool getFlag(FlagRegister flag) const;
 
     void setProgramMemory(Rom _prog);
     Rom& getProgramRom();
