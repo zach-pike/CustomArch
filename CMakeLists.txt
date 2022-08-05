@@ -12,7 +12,7 @@ file(GLOB_RECURSE ASSEM_SRC "src/assembler/*.cpp")
 add_executable(emulator ${EMU_SRC})
 add_executable(assembler ${ASSEM_SRC})
 
-include_directories("src/assembler")
+include_directories("src/assembler/backend")
 include_directories("src/")
 
 target_link_libraries(emulator dl)
