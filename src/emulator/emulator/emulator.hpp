@@ -8,17 +8,47 @@ namespace CPUEmulator {
 class Emulator {
 public:
     enum class Instructions {
-        LDI,   // Load a immediate byte into a 8-Bit register
-        LDIW,  // Load a immediate word into a 16-Bit register
-
+        // Add
         ADD,   // Add a value from two 8-Bit registers and put the value in the 16-Bit register A
         ADDW,  // Add a value from two 16-Bit registers and put the value in the 16-Bit register A
 
+        ADDI,  // Add a register(8-Bit) and a immediate(8-Bit) and store the result in the A register.
+        ADDIW, // Add a register(16-Bit) and a immediate(16-Bit) and store the result in the A register.
+
+        // Jump
         JMP,   // Takes a 16-Bit register and jumps to the location specified
         JMPI,  // Takes a 16-Bit address and jumps to the location specified
 
+        JEQ,   // Jump if equal to a address stored in a 16-Bit register
+        JNE,   // Jump if not equal to a address stored in a 16-Bit register
+
+        JEQI,  // Jump if equal to a immediate address
+        JNEI,  // Jump if not equal to a immediate address
+
+        // Stack push/pop
         PUSH,  // Push a 8-Bit value on the stack
-        PUSHW, 
+        PUSHW, // Push a 16-bit value on the stack
+
+        POP,   // Pop a 8-Bit value off the stack
+        POPW,  // Pop a 16-Bit value off the stack
+
+        // Move
+        MOV,   // Move a 8-Bit value between registers
+        MOVW,  // Move a 16-Bit value between registers
+
+        // Load immediate
+        LDI,   // Load a immediate byte into a 8-Bit register
+        LDIW,  // Load a immediate word into a 16-Bit register
+
+        // Load from address
+        LDFA,  // Load a value by derefrenceing a 16-Bit register and loading that value into the specified 8-Bit register
+        LDFAW, // Load a value by derefrenceing a 16-Bit register and loading that value into the specified 16-Bit register
+
+        LDFAI,   // Load a value by derefrenceing a 16-Bit immediate and loading that byte into a 8-Bit register
+        LDFAIW,  // Load a value by derefrenceing a 16-Bit immediate and loading thoes bytes into a 16-Bit register
+
+        // Halt
+        HLT,     // Send the halt command
     };
 
     enum class U16Registers {
