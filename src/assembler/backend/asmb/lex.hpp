@@ -19,6 +19,8 @@ namespace asmb {
         b_reg,
         c_reg,
         d_reg,
+        sp_reg,
+        ip_reg,
         al_reg,
         ah_reg,
         bl_reg,

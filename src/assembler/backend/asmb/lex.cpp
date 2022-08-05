@@ -360,6 +360,10 @@ tokens asmb::get_tokens_from_source(const std::span<const char> source) {
                             case 'D': return token_type::dh_reg;
                             default: break;
                         } break;
+                        case 'P': switch (literal.data[0]) {
+                            case 'S': return token_type::sp_reg;
+                            case 'I': return token_type::ip_reg;
+                        } break;
                         case 'Y': switch (literal.data[0]) {
                             case 'X': return token_type::xy_reg;
                             default: break;
