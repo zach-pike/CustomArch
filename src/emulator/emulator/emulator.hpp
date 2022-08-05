@@ -20,10 +20,16 @@ public:
         JMPI,  // Takes a 16-Bit address and jumps to the location specified
 
         JEQ,   // Jump if equal to a address stored in a 16-Bit register
-        JNE,   // Jump if not equal to a address stored in a 16-Bit register
-
         JEQI,  // Jump if equal to a immediate address
+
+        JNE,   // Jump if not equal to a address stored in a 16-Bit register
         JNEI,  // Jump if not equal to a immediate address
+
+        JLT,   // Jump if less than to a address stored in a 16-Bit register
+        JLTI,  // Jump if less than to a address passed in as a 16-Bit immediate
+
+        JGT,   // Jump if greater than to a address stored in a 16-Bit register
+        JGTI,  // Jump if greater than to a address passed in as a 16-Bit immediate
 
         // Stack push/pop
         PUSH,  // Push a 8-Bit value on the stack
@@ -48,8 +54,10 @@ public:
         LDFAIW,  // Load a value by derefrenceing a 16-Bit immediate and loading thoes bytes into a 16-Bit register
 
         // Compare instructions
-        CMP,     // Compare 2 8-Bit registers and sets the zero flag
-        CMPW,    // Compare 2 16-Bit registers and sets the zero flag
+        CMP,     // Compare 2 8-Bit registers and sets the zero flag and less than flag
+        CMPW,    // Compare 2 16-Bit registers and sets the zero flag and less than flag
+        CMPI,    // Compare a 8-Bit register with a 8-Bit immediate
+        CMPIW,   // Compare a 16-Bit register with a 16-Bit immediate
 
         // Halt
         HLT,     // Send the halt command
@@ -102,7 +110,8 @@ public:
 
     enum class FlagRegister {
         CARRY_FLAG,
-        ZERO_FLAG
+        ZERO_FLAG,
+        LESS_THAN_FLAG
     };
 
     Rom prog;
@@ -124,21 +133,26 @@ private:
     // Flags register
     std::uint8_t flagsRegister = 0;
 public:
+    std::uint8_t fullAdd(std::uint8_t v1, std::uint8_t v2);
+
     // Stack functions
     void stackPushU8(std::uint8_t value);
     void stackPushU16(std::uint16_t value);
     std::uint8_t stackPopU8();
     std::uint16_t stackPopU16();
 
+    // Register functions
     std::uint8_t& getU8Register(U8Registers reg);
     std::uint16_t& getU16Register(U16Registers reg);
 
+    // Flag functions
     void setFlag(FlagRegister flag, bool value);
     bool getFlag(FlagRegister flag) const;
 
     void setProgramMemory(Rom _prog);
     Rom& getProgramRom();
 
+    // Step the program one instruction ahead
     bool step();
 };
 }

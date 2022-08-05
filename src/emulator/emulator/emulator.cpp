@@ -116,6 +116,32 @@ bool Emulator::getFlag(FlagRegister flag) const {
     return (flagsRegister >> (int)flag) & 0x1;
 }
 
+std::uint8_t Emulator::fullAdd(std::uint8_t v1, std::uint8_t v2) {
+    std::uint8_t carry = getFlag(FlagRegister::CARRY_FLAG);
+
+    using b = std::uint8_t;
+        
+    b out = 0;
+
+    for (int i=0; i<8; i++) {
+        b in1 = (v1 >> i) & 0b1;
+        b in2 = (v2 >> i) & 0b1;
+
+        b sum1   = in1 ^ in2;
+        b carry1 = in1 & in2;
+
+        b sum2 = sum1 ^ carry;
+        b carry2 = sum1 & carry;
+
+        carry = carry1 | carry2;
+
+        if (sum2) out |= (0b1 << i);
+    }
+
+    setFlag(FlagRegister::CARRY_FLAG, carry);
+    return out;
+}
+
 bool Emulator::step() {
     // Load the instruction
     Instructions instruction = static_cast<Instructions>(prog[instructionPointer]);
@@ -143,10 +169,61 @@ bool Emulator::step() {
             instructionPointer = arg0;
         } break;
 
-        case Instructions::JEQ: break;
-        case Instructions::JNE: break;
-        case Instructions::JEQI: break;
-        case Instructions::JNEI: break;
+        case Instructions::JEQ: {
+            if (getFlag(FlagRegister::ZERO_FLAG) == true) {
+                incrementInstructionPointer = false;
+                instructionPointer = getU16Register((U16Registers)arg0);
+                setFlag(FlagRegister::ZERO_FLAG, false);
+            }
+        } break;
+        case Instructions::JEQI: {
+            if (getFlag(FlagRegister::ZERO_FLAG) == true) {
+                incrementInstructionPointer = false;
+                instructionPointer = arg0;
+                setFlag(FlagRegister::ZERO_FLAG, false);
+            }
+        } break;
+
+        case Instructions::JNE: {
+            if (getFlag(FlagRegister::ZERO_FLAG) == false) {
+                incrementInstructionPointer = false;
+                instructionPointer = getU16Register((U16Registers)arg0);
+            }
+        } break;
+        case Instructions::JNEI: {
+            if (getFlag(FlagRegister::ZERO_FLAG) == false) {
+                incrementInstructionPointer = false;
+                instructionPointer = arg0;
+            }
+        } break;
+
+        case Instructions::JLT: {
+            if (getFlag(FlagRegister::LESS_THAN_FLAG) == true) {
+                incrementInstructionPointer = false;
+                instructionPointer = getU16Register((U16Registers)arg0);
+                setFlag(FlagRegister::LESS_THAN_FLAG, false);
+            }
+        } break;
+        case Instructions::JLTI: {
+            if (getFlag(FlagRegister::LESS_THAN_FLAG) == true) {
+                incrementInstructionPointer = false;
+                instructionPointer = arg0;
+                setFlag(FlagRegister::LESS_THAN_FLAG, false);
+            }
+        } break;
+
+        case Instructions::JGT: {
+            if (getFlag(FlagRegister::LESS_THAN_FLAG) == false) {
+                incrementInstructionPointer = false;
+                instructionPointer = getU16Register((U16Registers)arg0);
+            }
+        } break;
+        case Instructions::JGTI: {
+            if (getFlag(FlagRegister::LESS_THAN_FLAG) == false) {
+                incrementInstructionPointer = false;
+                instructionPointer = arg0;
+            }
+        } break;
 
         case Instructions::PUSH: {
             U8Registers reg = (U8Registers)arg0;
@@ -205,6 +282,35 @@ bool Emulator::step() {
         } break;
         case Instructions::LDFAIW: {
             getU16Register((U16Registers)arg0) = (prog[arg0] << 8) | prog[arg0 + 1];
+        } break;
+
+        case Instructions::CMP: {
+            std::uint8_t reg1 = getU8Register((U8Registers)arg0);
+            std::uint8_t reg2 = getU8Register((U8Registers)arg1);
+
+            setFlag(FlagRegister::ZERO_FLAG, (reg1 - reg2) == 0);
+            setFlag(FlagRegister::LESS_THAN_FLAG, reg1 < reg2);
+        } break;
+        case Instructions::CMPW: {
+            std::uint16_t reg1 = getU16Register((U16Registers)arg0);
+            std::uint16_t reg2 = getU16Register((U16Registers)arg1);
+
+            setFlag(FlagRegister::ZERO_FLAG, (reg1 - reg2) == 0);
+            setFlag(FlagRegister::LESS_THAN_FLAG, reg1 < reg2);
+        } break;
+        case Instructions::CMPI: {
+            std::uint8_t reg1 = getU8Register((U8Registers)arg0);
+            std::uint8_t reg2 = arg1;
+
+            setFlag(FlagRegister::ZERO_FLAG, (reg1 - reg2) == 0);
+            setFlag(FlagRegister::LESS_THAN_FLAG, reg1 < reg2);
+        } break;
+        case Instructions::CMPIW: {
+            std::uint16_t reg1 = getU16Register((U16Registers)arg0);
+            std::uint16_t reg2 = arg1;
+
+            setFlag(FlagRegister::ZERO_FLAG, (reg1 - reg2) == 0);
+            setFlag(FlagRegister::LESS_THAN_FLAG, reg1 < reg2);
         } break;
 
         // Halt emulator
