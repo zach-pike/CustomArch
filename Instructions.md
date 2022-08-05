@@ -224,7 +224,7 @@ X = *Y
 
 ---
 
-### LDFAW
+### LDFAI
 Argument 0 - imm16
 
 Argument 1 - reg8
