@@ -1,4 +1,4 @@
-program {
+root {
     label {
         name = "my_string",
         constant {
@@ -6,8 +6,9 @@ program {
             value = "Hello World!"
         },
     },
-    label {
+    positioned_label {
         name = "start",
+        location = 256,
         push_instruction {
             value = identifier {
                 type = label,
@@ -17,7 +18,9 @@ program {
         pop_instruction {},
         using_keyword {
             alias = "i",
-            register = AL
+            value = identifier {
+                type = al_register
+            }
         },
         move_instruction {
             into = identifier {

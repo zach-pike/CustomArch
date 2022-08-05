@@ -53,7 +53,7 @@ namespace asmb {
         period,
         // plus,
         // minus,
-        // star,
+        star,
         // slash,
         // percent,
         // ampersand,
@@ -119,6 +119,10 @@ namespace asmb {
         token_literal* literals = nullptr;
 
         tokens() = default;
+        tokens(const tokens&) = delete;
+        tokens& operator=(const tokens&) = delete;
+
+        tokens(tokens&& other);
         tokens(lexer_states_and_token_literals&& states_and_literals, token_types&& types);
         ~tokens();
     };
