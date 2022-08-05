@@ -11,5 +11,5 @@ std::vector<u8> asmb::get_bytes_from_source(const std::span<const char> source) 
         fmt::print("{}, {}\n", (u32)tokens.types[i], std::string_view(tokens.literals[i].data, tokens.literals[i].size));
     }
 
-    return {};
+    return std::vector<u8>(0xffff);
 }
