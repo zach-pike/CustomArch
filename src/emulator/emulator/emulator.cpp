@@ -106,7 +106,7 @@ bool Emulator::step() {
     bool incrementInstructionPointer = true;
 
     switch (instruction) {
-        case Instructions::LDIB: {
+        case Instructions::LDI: {
             U8Registers reg = (U8Registers)arg0;
             getU8Register(reg) = (std::uint8_t)arg1;
         } break;
@@ -122,7 +122,7 @@ bool Emulator::step() {
             incrementInstructionPointer = false;
             instructionPointer = getU16Register((U16Registers)arg0);
         } break;
-        case Instructions::ADDB: break;
+        case Instructions::ADD: break;
         case Instructions::ADDW: break;
     }
 

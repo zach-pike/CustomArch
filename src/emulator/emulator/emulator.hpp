@@ -8,15 +8,17 @@ namespace CPUEmulator {
 class Emulator {
 public:
     enum class Instructions {
-        LDIB, // Load a immediate byte into a 8-Bit register
-        LDIW, // Load a immediate word into a 16-Bit register
+        LDI,   // Load a immediate byte into a 8-Bit register
+        LDIW,  // Load a immediate word into a 16-Bit register
 
-        ADDB,  // Add a value from two 8-Bit registers and put the value in the 16-Bit register A
+        ADD,   // Add a value from two 8-Bit registers and put the value in the 16-Bit register A
         ADDW,  // Add a value from two 16-Bit registers and put the value in the 16-Bit register A
 
         JMP,   // Takes a 16-Bit register and jumps to the location specified
-        JMPI   // Takes a 16-Bit address and jumps to the location specified
+        JMPI,  // Takes a 16-Bit address and jumps to the location specified
 
+        PUSH,  // Push a 8-Bit value on the stack
+        PUSHW, 
     };
 
     enum class U16Registers {
