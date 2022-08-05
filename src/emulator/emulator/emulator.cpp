@@ -216,24 +216,38 @@ bool Emulator::step() {
             std::uint8_t val1 = getU8Register((U8Registers)arg0);
             std::uint8_t val2 = getU8Register((U8Registers)arg1);
 
-            getU16Register(U16Registers::A) = val1 & val2;
+            std::uint8_t res = val1 & val2;
+
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
         } break;
         case Instructions::ANDW: {
             std::uint16_t val1 = getU16Register((U16Registers)arg0);
             std::uint16_t val2 = getU16Register((U16Registers)arg1);
 
-            getU16Register(U16Registers::A) = val1 & val2;
+            std::uint16_t res = val1 & val2;
+
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
         } break;
         case Instructions::ANDI: {
             std::uint8_t val1 = getU8Register((U8Registers)arg0);
             std::uint8_t val2 = (uint8_t)arg1;
 
-            getU16Register(U16Registers::A) = val1 & val2;
+            std::uint8_t res = val1 & val2;
+
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
+
         } break;
         case Instructions::ANDIW: {
             std::uint16_t val1 = getU16Register((U16Registers)arg0);
             std::uint16_t val2 = arg1;
-            getU16Register(U16Registers::A) = val1 & val2;
+
+            std::uint16_t res = val1 & val2;
+
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
         } break;
         
         // OR
@@ -241,37 +255,55 @@ bool Emulator::step() {
             std::uint8_t val1 = getU8Register((U8Registers)arg0);
             std::uint8_t val2 = getU8Register((U8Registers)arg1);
 
-            getU16Register(U16Registers::A) = val1 | val2;
+            std::uint8_t res = val1 | val2;
+
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
         } break;
         case Instructions::ORW: {
             std::uint16_t val1 = getU16Register((U16Registers)arg0);
             std::uint16_t val2 = getU16Register((U16Registers)arg1);
 
-            getU16Register(U16Registers::A) = val1 | val2;
+            std::uint16_t res = val1 | val2;
+
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
         } break;
         case Instructions::ORI: {
             std::uint8_t val1 = getU8Register((U8Registers)arg0);
             std::uint8_t val2 = arg1;
 
-            getU16Register(U16Registers::A) = val1 | val2;
+            std::uint8_t res = val1 | val2;
+            
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
         } break;
         case Instructions::ORIW: {
             std::uint16_t val1 = getU16Register((U16Registers)arg0);
             std::uint16_t val2 = getU16Register((U16Registers)arg1);
 
-            getU16Register(U16Registers::A) = val1 | val2;
+            std::uint16_t res = val1 | val2;
+
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
         } break;
 
         // Invert
         case Instructions::INV: {
             std::uint8_t val1 = getU8Register((U8Registers)arg0);
 
-            getU16Register(U16Registers::A) = ~val1;
+            std::uint8_t res = ~val1;
+
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
         } break;
         case Instructions::INVW: {
             std::uint16_t val1 = getU16Register((U16Registers)arg0);
 
-            getU16Register(U16Registers::A) = ~val1;
+            std::uint16_t res = ~val1;
+
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
         } break;
 
         // XOR
@@ -279,25 +311,37 @@ bool Emulator::step() {
             std::uint8_t val1 = getU8Register((U8Registers)arg0);
             std::uint8_t val2 = getU8Register((U8Registers)arg1);
 
-            getU16Register(U16Registers::A) = val1 ^ val2;
+            std::uint8_t res = val1 ^ val2;
+
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
         } break;
         case Instructions::XORW: {
             std::uint16_t val1 = getU16Register((U16Registers)arg0);
             std::uint16_t val2 = getU16Register((U16Registers)arg1);
 
-            getU16Register(U16Registers::A) = val1 ^ val2;
+            std::uint16_t res = val1 ^ val2;
+
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
         } break;
         case Instructions::XORI: {
             std::uint8_t val1 = getU8Register((U8Registers)arg0);
             std::uint8_t val2 = arg1;
 
-            getU16Register(U16Registers::A) = val1 ^ val2;
+            std::uint8_t res = val1 ^ val2;
+
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
         } break;
         case Instructions::XORIW: {
             std::uint16_t val1 = getU16Register((U16Registers)arg0);
             std::uint16_t val2 = arg1;
 
-            getU16Register(U16Registers::A) = val1 ^ val2;
+            std::uint16_t res = val1 ^ val2;
+
+            getU16Register(U16Registers::A) = res;
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
         } break;
     }
 
