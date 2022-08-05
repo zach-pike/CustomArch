@@ -1,0 +1,83 @@
+program {
+    label {
+        name = "my_string",
+        constant {
+            type = string,
+            value = "Hello World!"
+        },
+    },
+    label {
+        name = "start",
+        push_instruction {
+            value = identifier {
+                type = label,
+                name = "start"
+            }
+        },
+        pop_instruction {},
+        using_keyword {
+            alias = "i",
+            register = AL
+        },
+        move_instruction {
+            into = identifier {
+                type = alias,
+                name = "i"
+            },
+            from = constant {
+                type = integer,
+                value = 0
+            }
+        },
+        label {
+            name = "loop",
+            push_instruction {
+                value = identifier {
+                    type = alias,
+                    name = "i"
+                }
+            },
+            call_instruction {
+                function = identifier {
+                    type = extern,
+                    name = "putc"
+                }
+            },
+            pop_instruction {},
+            increment_instruction {
+                value = identifier {
+                    type = alias,
+                    name = "i"
+                }
+            },
+            compare_instruction {
+                value_1 = identifier {
+                    type = alias,
+                    name = "i"
+                },
+                value_2 = constant {
+                    type = integer,
+                    value = 255
+                },
+                comparison = less_than,
+                goto = identifier {
+                    type = label,
+                    name = "loop"
+                }
+            },
+            push_instruction {
+                value = constant {
+                    type = integer,
+                    value = 0
+                }
+            },
+            pop_instruction {},
+            call_instruction {
+                function = identifier {
+                    type = extern,
+                    name = "exit"
+                }
+            },
+        }
+    },
+}
