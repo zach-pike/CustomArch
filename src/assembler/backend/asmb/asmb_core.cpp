@@ -1,6 +1,7 @@
 #include "asmb_core.hpp"
 #include "lex.hpp"
 #include "expr.hpp"
+#include "ast.hpp"
 #include <fmt/core.h>
 
 using namespace asmb;
@@ -31,7 +32,9 @@ std::vector<u8> asmb::get_bytes_from_source(const std::span<const char> source) 
 
     auto exprs = get_expressions_from_tokens(std::move(tokens));
 
-    print_exprs(exprs); 
+    print_exprs(exprs);
+
+    auto tree = get_tree_from_expressions(std::move(exprs));
 
     return std::vector<u8>(0xffff);
 }

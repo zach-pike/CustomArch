@@ -11,7 +11,7 @@ start(0x100):
         putc();
         pop();
         i++;
-        if (i < 0xfF) goto loop;
+        if (i < 0xff) goto loop;
 
     push(0x0);
     pop();
