@@ -1,6 +1,8 @@
 #include "emulator/emulator.hpp"
 #include <iostream>
 
+#include <type_traits>
+
 // #include "assembler/asmb/asmb_core.hpp"
 
 int main() {
@@ -12,7 +14,9 @@ int main() {
 
     emulator.setProgramMemory(prog);
 
-    while(emulator.step());
+    // while();
+
+    emulator.step();
 
     // Should print out 256 (Proves that the instruction pointer got set to itsself at the jmp instruction)
     std::cout << (int)emulator.getU16Register(CPUEmulator::Emulator::U16Registers::IP) << std::endl;

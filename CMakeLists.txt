@@ -9,7 +9,7 @@ project(CustomArch)
 file(GLOB_RECURSE EMU_SRC "src/emulator/*.cpp")
 file(GLOB_RECURSE ASSEM_SRC "src/assembler/backend/*.cpp")
 
-add_executable(emulator ${EMU_SRC} ${ASSEM_SRC})
+add_executable(emulator ${EMU_SRC})
 add_executable(assembler ${ASSEM_SRC} "src/assembler/main.cpp")
 
 include_directories("src/assembler/backend")
