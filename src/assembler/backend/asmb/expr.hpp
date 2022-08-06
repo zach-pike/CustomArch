@@ -1,6 +1,6 @@
 #pragma once
 #include "lex.hpp"
-#include "ext/types.hpp"
+#include "../ext/types.hpp"
 #include <variant>
 #include <vector>
 

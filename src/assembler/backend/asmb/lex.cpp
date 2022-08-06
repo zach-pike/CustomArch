@@ -1,6 +1,6 @@
 #include "lex.hpp"
-#include "ext/types.hpp"
-#include "ext/util.hpp"
+#include "../ext/types.hpp"
+#include "../ext/util.hpp"
 #include <fmt/core.h>
 
 using namespace asmb;

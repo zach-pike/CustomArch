@@ -21,8 +21,26 @@ namespace asmb {
 
     //
 
-    struct node {
+    struct label_node;
+    struct positioned_label_node;
 
+    using string_node = string_value;
+
+    using node = std::variant<
+        label_node,
+        positioned_label_node,
+        string_node
+    >;
+
+    struct label_node {
+        token_literal name;
+        std::vector<node> children;
+    };
+
+    struct positioned_label_node {
+        token_literal name;
+        integer_value position;
+        std::vector<node> children;
     };
 
     std::vector<node> get_tree_from_expressions(std::vector<expr> exprs);
