@@ -42,6 +42,14 @@ namespace asmb {
         u16 value;
     };
 
+    struct string_expr {
+        token_literal value;
+    };
+
+    struct character_expr {
+        char value;
+    };
+
     struct paren_expr;
     struct bracket_expr;
     struct brace_expr;
@@ -53,7 +61,9 @@ namespace asmb {
         brace_expr,
         identifier_expr,
         register_expr,
-        integer_expr
+        integer_expr,
+        string_expr,
+        character_expr
     >;
 
     struct paren_expr {

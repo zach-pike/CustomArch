@@ -265,6 +265,7 @@ tokens asmb::get_tokens_from_source(const std::span<const char> source) {
 
     const auto use_hex_integer_state = [&]() {
         ++it;
+        reset_literal();
         for (;it != source.end(); ++it) {
             switch (*it) {
                 default:
@@ -446,8 +447,8 @@ tokens asmb::get_tokens_from_source(const std::span<const char> source) {
                     } break;
                 }
                 return token_type::invalid;
-            case lexer_state::dec_integer:
-            case lexer_state::hex_integer: return token_type::integer;
+            case lexer_state::dec_integer: return token_type::dec_integer;
+            case lexer_state::hex_integer: return token_type::hex_integer;
             case lexer_state::character: return token_type::character;
             case lexer_state::string: return token_type::string;
             default: return token_type::invalid;

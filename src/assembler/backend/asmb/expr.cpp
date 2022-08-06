@@ -1,5 +1,5 @@
 #include "expr.hpp"
-#include <fmt/core.h>
+#include "ext/util.hpp"
 
 using namespace asmb;
 
@@ -24,6 +24,14 @@ std::vector<expr> asmb::get_expressions_from_tokens(tokens tokens) {
                     ++index;
                     add_expr(add_expr, token_type::right_paren, std::get<paren_expr>(exprs.emplace_back(paren_expr{})).children);
                     break;
+                case token_type::left_bracket:
+                    ++index;
+                    add_expr(add_expr, token_type::right_bracket, std::get<bracket_expr>(exprs.emplace_back(bracket_expr{})).children);
+                    break;
+                case token_type::left_brace:
+                    ++index;
+                    add_expr(add_expr, token_type::right_brace, std::get<brace_expr>(exprs.emplace_back(brace_expr{})).children);
+                    break;
                 case token_type::a_reg:
                 case token_type::b_reg:
                 case token_type::c_reg:
@@ -41,7 +49,25 @@ std::vector<expr> asmb::get_expressions_from_tokens(tokens tokens) {
                 case token_type::y_reg:
                 case token_type::sp_reg:
                 case token_type::ip_reg:
-                    exprs.push_back(register_expr{(register_type)((u32)tokens.types[index] - (u32)token_type::a_reg)});
+                    exprs.push_back(register_expr{
+                        (register_type)((u32)tokens.types[index] - (u32)token_type::a_reg)
+                    });
+                    break;
+                case token_type::dec_integer:
+                    exprs.push_back(integer_expr{
+                        ext::get_dec_integer<u16>(std::string_view(tokens.literals[index].data, tokens.literals[index].size))
+                    });
+                    break;
+                case token_type::hex_integer:
+                    exprs.push_back(integer_expr{
+                        ext::get_hex_integer<u16>(std::string_view(tokens.literals[index].data, tokens.literals[index].size))
+                    });
+                    break;
+                case token_type::string:
+                    exprs.push_back(string_expr{tokens.literals[index]});
+                    break;
+                case token_type::character:
+                    exprs.push_back(character_expr{tokens.literals[index].data[0]});
                     break;
             }
         }

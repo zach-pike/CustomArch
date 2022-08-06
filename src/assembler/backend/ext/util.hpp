@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include <string_view>
 
 namespace ext {
     template<std::size_t MAX, std::size_t I, typename F>
@@ -42,5 +43,31 @@ namespace ext {
             }
         }
         return true;
+    }
+    
+    template <typename T>
+    T get_dec_integer(std::string_view str) {
+        T result = 0;
+        for (auto ch : str) {
+            result *= 10;
+            result += ch - '0';
+        }
+        return result;
+    }
+
+    template<typename T>
+    T get_hex_integer(std::string_view str) {
+        T result = 0;
+        for (auto ch : str) {
+            result *= 16;
+            if (ch >= '0' && ch <= '9') {
+                result += ch - '0';
+            } else if (ch >= 'A' && ch <= 'F') {
+                result += ch - 'A' + 10;
+            } else if (ch >= 'a' && ch <= 'f') {
+                result += ch - 'a' + 10;
+            }
+        }
+        return result;
     }
 }

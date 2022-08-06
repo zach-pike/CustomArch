@@ -72,7 +72,8 @@ namespace asmb {
         exclamation_equals,
         caret_equals,
         //
-        integer,
+        dec_integer,
+        hex_integer,
         character,
         string
     };
