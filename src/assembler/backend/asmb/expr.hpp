@@ -14,6 +14,19 @@ namespace asmb {
         token_literal name;
     };
 
+    enum class keyword_type {
+        push_,
+        pop_,
+        if_,
+        goto_,
+        return_,
+        using_,
+    };
+
+    struct keyword_expr {
+        keyword_type type;
+    };
+
     enum class register_type {
         a,
         b,
@@ -61,6 +74,7 @@ namespace asmb {
         brace_expr,
         identifier_expr,
         register_expr,
+        keyword_expr,
         integer_expr,
         string_expr,
         character_expr

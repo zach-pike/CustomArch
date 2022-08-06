@@ -8,12 +8,12 @@ namespace asmb {
         invalid,
         // Words
         // Keywords
-        if_keyword,
-        goto_keyword,
-        using_keyword,
-        return_keyword,
         push_keyword,
         pop_keyword,
+        if_keyword,
+        goto_keyword,
+        return_keyword,
+        using_keyword,
         // Registers
         a_reg,
         b_reg,

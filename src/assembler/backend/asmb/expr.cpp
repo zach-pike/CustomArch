@@ -53,6 +53,16 @@ std::vector<expr> asmb::get_expressions_from_tokens(tokens tokens) {
                         (register_type)((u32)tokens.types[index] - (u32)token_type::a_reg)
                     });
                     break;
+                case token_type::push_keyword:
+                case token_type::pop_keyword:
+                case token_type::if_keyword:
+                case token_type::goto_keyword:
+                case token_type::return_keyword:
+                case token_type::using_keyword:
+                    exprs.push_back(keyword_expr{
+                        (keyword_type)((u32)tokens.types[index] - (u32)token_type::push_keyword)
+                    });
+                    break;
                 case token_type::dec_integer:
                     exprs.push_back(integer_expr{
                         ext::get_dec_integer<u16>(std::string_view(tokens.literals[index].data, tokens.literals[index].size))
