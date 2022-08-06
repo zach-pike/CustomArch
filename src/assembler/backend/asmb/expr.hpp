@@ -68,16 +68,5 @@ namespace asmb {
         std::vector<expr> children;
     };
 
-    //
-    
-    struct root_node {};
-
-    struct node {
-        std::vector<node> children;
-        std::variant<
-            root_node
-        > val;
-    };
-
-    node get_tree_from_tokens(tokens tokens);
+    std::vector<expr> get_expressions_from_tokens(tokens tokens);
 };

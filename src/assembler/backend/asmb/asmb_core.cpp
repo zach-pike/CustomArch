@@ -1,18 +1,9 @@
 #include "asmb_core.hpp"
 #include "lex.hpp"
-#include "ast.hpp"
+#include "expr.hpp"
 #include <fmt/core.h>
 
 using namespace asmb;
-
-void print_node(const node& node) {
-    fmt::print("{}\n", node.val.index());
-    fmt::print("Children (#{}): [\n", node.children.size());
-    for (const auto& child : node.children) {
-        print_node(child);
-    }
-    fmt::print("]\n");
-}
 
 std::vector<u8> asmb::get_bytes_from_source(const std::span<const char> source) {
     auto tokens = get_tokens_from_source(source);
@@ -21,7 +12,7 @@ std::vector<u8> asmb::get_bytes_from_source(const std::span<const char> source) 
     //     fmt::print("{}, {}\n", (u32)tokens.types[i], std::string_view(tokens.literals[i].data, tokens.literals[i].size));
     // }
 
-    auto root = get_tree_from_tokens(std::move(tokens));
+    auto expressions = get_expressions_from_tokens(std::move(tokens));
 
     // print_node(root); 
 

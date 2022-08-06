@@ -1,9 +1,9 @@
-#include "ast.hpp"
+#include "expr.hpp"
 #include <fmt/core.h>
 
 using namespace asmb;
 
-node asmb::get_tree_from_tokens(tokens tokens) {
+std::vector<expr> asmb::get_expressions_from_tokens(tokens tokens) {
     std::vector<expr> exprs;
 
     std::size_t index = 0;
@@ -48,20 +48,6 @@ node asmb::get_tree_from_tokens(tokens tokens) {
     };
 
     add_expr(add_expr, token_type::invalid, exprs);
-    
-    const auto print_exprs = [](const auto& print_exprs, const auto& exprs) -> void {
-        for (const auto& expr : exprs) {
-            fmt::print("{}\n", expr.index());
-            if (std::holds_alternative<paren_expr>(expr)) {
-                fmt::print("Children: [\n");
-                print_exprs(print_exprs, std::get<paren_expr>(expr).children);
-                fmt::print("]\n");
-            }
-        }
-    };
 
-    fmt::print("Printing exprs\n");
-    print_exprs(print_exprs, exprs);
-
-    return { .children = {}, .val = root_node{} };
+    return exprs;
 }
