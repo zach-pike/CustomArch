@@ -19,6 +19,7 @@ namespace asmb {
         b_reg,
         c_reg,
         d_reg,
+        xy_reg,
         sp_reg,
         ip_reg,
         al_reg,
@@ -29,7 +30,6 @@ namespace asmb {
         ch_reg,
         dl_reg,
         dh_reg,
-        xy_reg,
         x_reg,
         y_reg,
         //

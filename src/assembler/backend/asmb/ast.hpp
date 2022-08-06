@@ -5,108 +5,77 @@
 #include <vector>
 
 namespace asmb {
-    // Value and indirect value types
+    // Expressions
+    struct token_expr {
+        token_type type;  
+    };
 
-    struct label_identifier {
+    struct identifier_expr {
         token_literal name;
     };
 
-    using value = std::variant<label_identifier>;
-    struct indirect_value {
-        bool is_indirect;
-        value val;
+    enum class register_type {
+        a,
+        b,
+        c,
+        d,
+        xy,
+        sp_reg,
+        ip_reg,
+        al,
+        ah,
+        bl,
+        bh,
+        cl,
+        ch,
+        dl,
+        dh,
+        x,
+        y
     };
 
-    // Node types
-
-    struct label {
-        token_literal name;
+    struct register_expr {
+        register_type type;
     };
 
-    struct positioned_label {
-        token_literal name;
-        u16 addr;
+    struct integer_expr {
+        u16 value;
     };
 
-    struct push_instruction {
-        value val;
+    struct paren_expr;
+    struct bracket_expr;
+    struct brace_expr;
+
+    using expr = std::variant<
+        token_expr,
+        paren_expr,
+        bracket_expr,
+        brace_expr,
+        identifier_expr,
+        register_expr,
+        integer_expr
+    >;
+
+    struct paren_expr {
+        std::vector<expr> children;
     };
 
-    struct pop_instruction {};
-
-    struct pop_value_instruction {
-        value val;
+    struct bracket_expr {
+        std::vector<expr> children;
     };
 
-    struct move_instruction {
-        indirect_value into;
-        indirect_value from;
+    struct brace_expr {
+        std::vector<expr> children;
     };
 
-    struct call_instruction {
-        value val;
-    };
-
-    struct increment_instruction {
-        indirect_value val;
-    };
-
-    struct add_instruction {
-        indirect_value into;
-        indirect_value from;
-    };
-
-    struct sub_instruction {
-        indirect_value into;
-        indirect_value from;
-    };
-
-    struct mul_instruction {
-        indirect_value into;
-        indirect_value from;
-    };
-
-    struct div_instruction {
-        indirect_value into;
-        indirect_value from;
-    };
-
-    struct less_than_instruction {
-        value into;
-        value from;
-    };
-
-    struct greater_than_instruction {
-        value into;
-        value from;
-    };
-
-    struct less_than_or_equal_instruction {
-        value into;
-        value from;
-    };
-
-    struct greater_than_or_equal_instruction {
-        value into;
-        value from;
-    };
-
-    struct using_keyword {
-        token_literal alias;
-        value val;
-    };
-
-    struct root {};
+    //
+    
+    struct root_node {};
 
     struct node {
         std::vector<node> children;
         std::variant<
-            root,
-            label,
-            positioned_label,
-            push_instruction,
-            pop_instruction,
-            pop_value_instruction
+            root_node
         > val;
     };
 

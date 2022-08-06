@@ -1,44 +1,67 @@
 #include "ast.hpp"
+#include <fmt/core.h>
 
 using namespace asmb;
 
 node asmb::get_tree_from_tokens(tokens tokens) {
-    // // Use call state instead of state machine.
-    // enum class builder_state {
-    //     none,
-    //     identifier,
-    //     eof
-    // };
+    std::vector<expr> exprs;
+
+    std::size_t index = 0;
+
+    const auto add_expr = [&tokens, &index](const auto& add_expr, token_type end_token_type, std::vector<expr>& exprs) -> void {
+        for (;index < tokens.size; ++index) {
+            if (tokens.types[index] == end_token_type) {
+                return;
+            }
+            switch (tokens.types[index]) {
+                default:
+                    exprs.push_back(token_expr{tokens.types[index]});
+                    break;
+                case token_type::identifier:
+                    exprs.push_back(identifier_expr{tokens.literals[index]});
+                    break;
+                case token_type::left_paren:
+                    ++index;
+                    add_expr(add_expr, token_type::right_paren, std::get<paren_expr>(exprs.emplace_back(paren_expr{})).children);
+                    break;
+                case token_type::a_reg:
+                case token_type::b_reg:
+                case token_type::c_reg:
+                case token_type::d_reg:
+                case token_type::al_reg:
+                case token_type::ah_reg:
+                case token_type::bl_reg:
+                case token_type::bh_reg:
+                case token_type::cl_reg:
+                case token_type::ch_reg:
+                case token_type::dl_reg:
+                case token_type::dh_reg:
+                case token_type::xy_reg:
+                case token_type::x_reg:
+                case token_type::y_reg:
+                case token_type::sp_reg:
+                case token_type::ip_reg:
+                    exprs.push_back(register_expr{(register_type)((u32)tokens.types[index] - (u32)token_type::a_reg)});
+                    break;
+            }
+        }
+    };
+
+    add_expr(add_expr, token_type::invalid, exprs);
     
-    // builder_state state = builder_state::none;
+    const auto print_exprs = [](const auto& print_exprs, const auto& exprs) -> void {
+        for (const auto& expr : exprs) {
+            fmt::print("{}\n", expr.index());
+            if (std::holds_alternative<paren_expr>(expr)) {
+                fmt::print("Children: [\n");
+                print_exprs(print_exprs, std::get<paren_expr>(expr).children);
+                fmt::print("]\n");
+            }
+        }
+    };
 
-    // std::size_t index = 0;
+    fmt::print("Printing exprs\n");
+    print_exprs(print_exprs, exprs);
 
-    // const auto use_none_state = [&]() {
-    //     for (; index != tokens.size; ++index) {
-    //         switch (tokens.types[index]) {
-    //             default: break;
-    //             case token_type::identifier:
-    //                 state = builder_state::identifier;
-    //                 return;
-    //         }
-    //     }
-    // };
-
-    // const auto use_identifier_state = [&]() {
-    //     auto identifier_literal = tokens.literals[index];
-    //     ++index;
-    //     for (; index != tokens.size; ++index) {
-    //     }
-    // };
-
-    // while (state != builder_state::eof) {
-    //     switch (state) {
-    //         case builder_state::none: use_none_state(); break;
-    //         case builder_state::identifier: use_identifier_state(); break;
-    //         default: break;
-    //     }
-    // }
-
-    return { .children = {}, .val = root{} };
+    return { .children = {}, .val = root_node{} };
 }
