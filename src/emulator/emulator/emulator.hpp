@@ -32,11 +32,13 @@ public:
         JGTI,  // Jump if greater than to a address passed in as a 16-Bit immediate
 
         // Stack push/pop
-        PUSH,  // Push a 8-Bit value on the stack
-        PUSHW, // Push a 16-bit value on the stack
+        PUSH,   // Push a 8-Bit value on the stack
+        PUSHW,  // Push a 16-bit value on the stack
+        PUSHIW, // Push a 16-Bit immediate onto the stack
 
         POP,   // Pop a 8-Bit value off the stack
         POPW,  // Pop a 16-Bit value off the stack
+        POPN,  // Pop the most recent value off the stack and discard it
 
         // Move
         MOV,   // Move a 8-Bit value between registers
@@ -52,6 +54,13 @@ public:
 
         LDFAI,   // Load a value by derefrenceing a 16-Bit immediate and loading that byte into a 8-Bit register
         LDFAIW,  // Load a value by derefrenceing a 16-Bit immediate and loading thoes bytes into a 16-Bit register
+
+        // Store to address
+        STA,  // Takes a 16-Bit register and stores the byte in the second register at that location
+        STAW, // Takes a 16-Bit register and stores the word in the second register at that location
+
+        STAI, // Takes 16-Byte address and stores a immediate byte at that location
+        STAIW, // Takes 16-Byte address and stores a immediate word at that location
 
         // Compare instructions
         CMP,     // Compare 2 8-Bit registers and sets the zero flag and less than flag
@@ -84,6 +93,9 @@ public:
         XORW,
         XORI,
         XORIW,
+
+        REGADD,  // Add a immediate to a 8-Bit register
+        REGADDW, // Add a immediate to a 16-Bit register
     };
 
     enum class U16Registers {

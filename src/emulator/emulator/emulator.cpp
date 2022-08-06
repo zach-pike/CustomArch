@@ -154,10 +154,46 @@ bool Emulator::step() {
     bool returnValue = true;
 
     switch (instruction) {
-        case Instructions::ADD: break;
-        case Instructions::ADDW: break;
-        case Instructions::ADDI: break;
-        case Instructions::ADDIW: break;
+        case Instructions::ADD: {
+            std::uint8_t v1 = getU8Register((U8Registers)arg0);
+            std::uint8_t v2 = getU8Register((U8Registers)arg1);
+
+            std::uint8_t res = fullAdd(v1, v2);
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
+            getU16Register(U16Registers::A) = res;
+        } break;
+        case Instructions::ADDW: {
+            std::uint16_t v1 = getU16Register((U16Registers)arg0);
+            std::uint16_t v2 = getU16Register((U16Registers)arg1);
+
+            std::uint8_t lores = fullAdd(v1 & 0xff, v2 & 0xff);
+            std::uint8_t hires = fullAdd((v1 >> 8) & 0xff, (v2 >> 8) & 0xff);
+
+            std::uint16_t res = (hires << 8) | lores;
+
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
+            getU16Register(U16Registers::A) = res;
+        } break;
+        case Instructions::ADDI: {
+            std::uint8_t v1 = getU8Register((U8Registers)arg0);
+            std::uint8_t v2 = arg1;
+
+            std::uint8_t res = fullAdd(v1, v2);
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
+            getU16Register(U16Registers::A) = res;
+        } break;
+        case Instructions::ADDIW: {
+            std::uint16_t v1 = getU16Register((U16Registers)arg0);
+            std::uint16_t v2 = arg1;
+
+            std::uint8_t lores = fullAdd(v1 & 0xff, v2 & 0xff);
+            std::uint8_t hires = fullAdd((v1 >> 8) & 0xff, (v2 >> 8) & 0xff);
+
+            std::uint16_t res = (hires << 8) | lores;
+
+            setFlag(FlagRegister::ZERO_FLAG, res == 0);
+            getU16Register(U16Registers::A) = res;
+        } break;
 
         case Instructions::JMP: {
             incrementInstructionPointer = false;
@@ -282,6 +318,30 @@ bool Emulator::step() {
         } break;
         case Instructions::LDFAIW: {
             getU16Register((U16Registers)arg0) = (prog[arg0] << 8) | prog[arg0 + 1];
+        } break;
+
+        case Instructions::STA: {
+            std::uint16_t address = getU16Register((U16Registers)arg0);
+            prog[address] = getU8Register((U8Registers)arg1);
+        } break;
+        case Instructions::STAW: {
+            std::uint16_t address = getU16Register((U16Registers)arg0);
+            std::uint16_t value = getU16Register((U16Registers)arg1);
+            prog[address] = (value >> 8) & 0xff;
+            prog[address + 1] = value & 0xff;
+        } break;
+        case Instructions::STAI: {
+            std::uint16_t address = getU16Register((U16Registers)arg0);
+            std::uint8_t  value   = arg1;
+
+            prog[address] = value;
+        } break;
+        case Instructions::STAIW: {
+            std::uint16_t address = getU16Register((U16Registers)arg0);
+            std::uint16_t value   = arg1;
+
+            prog[address] = (value >> 8) & 0xff;
+            prog[address + 1] = value & 0xff;
         } break;
 
         case Instructions::CMP: {
@@ -448,6 +508,16 @@ bool Emulator::step() {
 
             getU16Register(U16Registers::A) = res;
             setFlag(FlagRegister::ZERO_FLAG, res == 0);
+        } break;
+        case Instructions::REGADD: {
+            U8Registers reg = (U8Registers)arg0;
+
+            getU8Register(reg) += (std::uint8_t)arg1;
+        } break;
+        case Instructions::REGADDW: {
+            U16Registers reg = (U16Registers)arg0;
+
+            getU16Register(reg) += arg1;
         } break;
     }
 
