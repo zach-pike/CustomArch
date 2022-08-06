@@ -1,7 +1,18 @@
+my_string: "Hello World!";
 start(0x100):
-    A = 0x1000;
-    B = 0x1020;
-    C = 0x1040;
-    D = 0x1060;
-    X = 0x80;
-    Y = 0xA0;
+    push(my_string);
+    puts();
+    pop();
+
+    using i = AL;
+    i = 0;
+    loop:
+        push(i);
+        putc();
+        pop();
+        i++;
+        if (i < 0xff) goto loop;
+
+    push(0x0);
+    pop();
+    exit();
