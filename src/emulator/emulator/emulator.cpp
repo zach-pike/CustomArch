@@ -519,6 +519,13 @@ bool Emulator::step() {
 
             getU16Register(reg) += arg1;
         } break;
+
+        case Instructions::INY: {
+          getU8Register(U8Registers::Y)++;
+        } break;
+        case Instructions::INX: {
+          getU8Register(U8Registers::X)++;
+        } break;
     }
 
     // Every instruction is 5 bytes wide

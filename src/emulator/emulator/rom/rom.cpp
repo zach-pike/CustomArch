@@ -20,7 +20,7 @@ std::uint8_t& Rom::operator[](int index) {
 }
 
 void Rom::readFromBytes(const std::vector<std::uint8_t>& bytes) {
-    if (bytes.size() != 0xffff) throw std::runtime_error("Array is incorrect size!");
+    if (bytes.size() != 0x10000) throw std::runtime_error("Array is incorrect size!");
     int index = 0;
     for (const auto& b : bytes) rom[index ++] = b;
 }

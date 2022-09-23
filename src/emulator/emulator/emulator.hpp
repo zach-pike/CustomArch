@@ -96,6 +96,8 @@ public:
 
         REGADD,  // Add a immediate to a 8-Bit register
         REGADDW, // Add a immediate to a 16-Bit register
+        INX,
+        INY
     };
 
     enum class U16Registers {
